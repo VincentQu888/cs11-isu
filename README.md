@@ -1,6 +1,7 @@
 # Maze Escape
 This was made by me in grade 10 so if the explanations below are not good sorry about that!  
-
+<br/>
+<br/>
 Group Members: Vincent
 
 Game Title: Maze Escape
