@@ -228,17 +228,10 @@ public class Main {
   public static char[][] defaultBoard(int length){
     char[][] board = new char[length][length]; //board setup for kruskals
 
-    for(int i = 1; i < length; i += 2){
-      for(int j = 1; j < length; j += 2){
-        board[i][j] = ' ';
-      }
-    }
-    for(int i = 1; i < length-1; ++i){ //omit border of maze for kruskals or else kruskals may remove those wa;;s
+    for(int i = 1; i < length-1; ++i){ //omit border of maze for kruskals or else kruskals may remove those walls
       for(int j = 1; j < length-1; ++j){
-        if(board[i][j] != ' '){
-          board[i][j] = '#';
-          wallList.add(new wall(i, j));
-        } 
+        board[i][j] = '#';
+        wallList.add(new wall(i, j));
       }
     }
     
@@ -289,36 +282,36 @@ public class Main {
     } 
 
 
-    //set ceratain cells near entrance/exit to usable to player to decrease chances of random generation removing nearly everything before creating suitable maze
+    //set certain cells near entrance/exit to usable to player or else maze may become impossible, because validity check does not include if top left or bottom right are walls or not
     maze[maze.length-2][maze.length-2] = ' '; 
-    maze[maze.length-3][maze.length-2] = ' ';
-    maze[maze.length-2][maze.length-3] = ' ';
-    maze[2][1] = ' ';
-    maze[1][2] = ' ';
+    maze[1][1] = ' ';
     
     for(int i = 0; !valid(maze); ++i){ //continue until maze is valid
       int x = wallList.get(i).x; //find x and y coordinates
       int y = wallList.get(i).y;
-      maze[x][y] = ' ';
+
+      if(maze[x][y] == '#'){ //only if it is a wall currently
+        maze[x][y] = ' ';
       
-      if(x-1 >= 0){ //array index error handling
-        if(find(cellIndices[x][y]) != find(cellIndices[x-1][y])){ //if not in same group
-          union(cellIndices[x][y], cellIndices[x-1][y]); //unify by removing wall
+        if(x-1 >= 0){ //array index error handling
+          if(find(cellIndices[x][y]) != find(cellIndices[x-1][y])){ //if not in same group
+            union(cellIndices[x][y], cellIndices[x-1][y]); //unify by removing wall
+          }
         }
-      }
-      if(x+1 < maze.length){ //same logic for each cell up, down, left and right to chosen wall
-        if(find(cellIndices[x][y]) != find(cellIndices[x+1][y])){
-          union(cellIndices[x][y], cellIndices[x+1][y]);
+        if(x+1 < maze.length){ //same logic for each cell up, down, left and right to chosen wall
+          if(find(cellIndices[x][y]) != find(cellIndices[x+1][y])){
+            union(cellIndices[x][y], cellIndices[x+1][y]);
+          }
         }
-      }
-      if(y-1 >= 0){
-        if(find(cellIndices[x][y]) != find(cellIndices[x][y-1])){
-          union(cellIndices[x][y], cellIndices[x][y-1]);
+        if(y-1 >= 0){
+          if(find(cellIndices[x][y]) != find(cellIndices[x][y-1])){
+            union(cellIndices[x][y], cellIndices[x][y-1]);
+          }
         }
-      }
-      if(y+1 < maze.length){
-        if(find(cellIndices[x][y]) != find(cellIndices[x][y+1])){
-          union(cellIndices[x][y], cellIndices[x][y+1]);
+        if(y+1 < maze.length){
+          if(find(cellIndices[x][y]) != find(cellIndices[x][y+1])){
+            union(cellIndices[x][y], cellIndices[x][y+1]);
+          }
         }
       }
     }
@@ -380,6 +373,8 @@ public class Main {
     parent = new int[parentSize]; //initializes all structures
     size = new int[parentSize];
     cellIndices = new int[length][length]; 
+    wallList = new ArrayList<>();
+    
     for(int i = 0; i < parentSize; i++){
       parent[i] = i; //initially parent of cell is itself
       size[i] = 1; //initially each group is size 1
