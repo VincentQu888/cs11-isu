@@ -33,7 +33,7 @@ q: exit mid-game
 enter: submit move
 
 Legend:
-# - wall (not travellable)
+\# - wall (not travellable)
    - travellable pathway
 ● - your character
 ○ - bot's character
