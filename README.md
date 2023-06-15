@@ -6,8 +6,8 @@ gr11 computer science isu
 
 
 
-MAZE ESCAPE
--------------------------------------------------------------------
+#Maze Escape
+
 Group Members: Vincent
 
 Game Title: Maze Escape
@@ -33,6 +33,7 @@ q: exit mid-game
 enter: submit move
 
 Legend:
+
 \# - wall (not travellable)
    - travellable pathway
 ● - your character
