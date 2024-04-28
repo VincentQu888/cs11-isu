@@ -1,6 +1,4 @@
 # Maze Escape
-<br/>
-<br/>
 Group Members: Vincent
 
 Game Title: Maze Escape
